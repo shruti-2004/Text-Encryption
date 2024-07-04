@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryption</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Text Encryption Using AES</h1>
+    <form id="crypto-form">
+        <label for="text">Text:</label>
+        <input type="text" id="text" name="text" required><br><br>
+        <button type="button" onclick="encryptText()">Encrypt</button>
+        <button type="button" onclick="decryptText()">Decrypt</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+        async function encryptText() {
+            const text = document.getElementById('text').value;
+            const response = await fetch('/encrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text
+                })
+            });
+            const result = await response.json();
+            document.getElementById('result').textContent = `Encrypted: ${result.encrypted}`;
+        }
+
+        async function decryptText() {
+            const text = document.getElementById('text').value;
+            const response = await fetch('/decrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text
+                })
+            });
+            const result = await response.json();
+            document.getElementById('result').textContent = `Decrypted: ${result.decrypted}`;
+        }
+    </script>
+</body>
+
+</html>
